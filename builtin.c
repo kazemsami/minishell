@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:33:15 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/02 16:46:56 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/04 18:09:32 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ int	env_len(char *str, int i)
 	int	len;
 
 	len = 0;
-	while (str[i] && str[i] != 1 && str[i] != '\'')
+	if (ft_isdigit(str[i]) || str[i] == '?')
+		return (1);
+	while ((str[i] && str[i] != 1) && (ft_isdigit(str[i]) || ft_isalpha(str[i])
+			|| str[i] == '_'))
 	{
 		++i;
 		++len;
@@ -72,28 +75,26 @@ char	*env_name(char *str, int i, int len)
 char	*find_env(char *str, t_prog *prog, int i)
 {
 	char	*ret;
-	int		fnd_quote;
 	char	tmp[2];
 
 	ret = NULL;
-	fnd_quote = 0;
 	tmp[1] = '\0';
 	while (str[i])
 	{
 		if (str[i] == 1 && str[i + 1] != '\0')
 		{
-			fnd_quote = 0;
 			do_env(str, ++i, prog, &ret);
-			i += env_len(str, i) - 1;
+			i += env_len(str, i);
 		}
-		tmp[0] = str[i];
-		if (str[i] == 1 && str[i + 1] == '\0' && dollar_am(str) % 2)
-			ret = ft_strjoin(ret, "$", 1);
-		if (str[i] == '\'' && !fnd_quote)
-			fnd_quote = 1;
-		if (str[i] && str[i] != 1 && fnd_quote)
+		if (str[i])
+		{
+			if (str[i] == 1)
+				tmp[0] = '$';
+			else
+				tmp[0] = str[i];
 			ret = ft_strjoin(ret, tmp, 1);
-		++i;
+			++i;
+		}
 	}
 	return (ret);
 }

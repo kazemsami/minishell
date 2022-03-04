@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 00:52:44 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/03 15:09:34 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/04 15:16:47 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*get_env(char *env, t_prog *prog)
 	int		i;
 
 	i = 0;
+	if (env[0] == '=' && env[1] == '\0')
+		return (ft_strdup("$"));
 	if (!ft_strcmp(env, "?="))
 		return (ft_itoa(prog->ret));
 	else
