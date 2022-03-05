@@ -107,6 +107,7 @@ int		next_op(t_prog *prog, int i);
 int		check_hyphen(char *line, int i);
 char	*remove_tabs(char *line);
 void	redir(t_prog *prog, int z);
+int		ft_strcmp_lu(char *s1, char *s2);
 void	ft_exit(t_prog *prog);
 void	ft_env(t_prog *prog);
 int		ft_env_size(char **env);

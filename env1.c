@@ -23,7 +23,7 @@ int	ft_find_env(char **env, char *str)
 	{
 		while (env[i])
 		{
-			if (env[i][0] == str[0] && env[i][1] == '=')
+			if (env[i][0] == str[0] && (env[i][1] == '=' || !env[i][1]))
 				return (i);
 			i++;
 		}

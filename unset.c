@@ -63,7 +63,7 @@ int	ft_check_variable(char *com, char *env)
 	int	i;
 
 	i = 0;
-	while (com[i] == env[i])
+	while (com[i] == env[i] && com[i])
 		i++;
 	if (!com[i] && (!env[i] || env[i] == '='))
 		return (1);

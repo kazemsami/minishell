@@ -14,21 +14,21 @@
 
 int	is_builtin(char *cmd)
 {
-	if (!ft_strcmp(cmd, "cd")
-		|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "exit")
+	if (!ft_strcmp_lu(cmd, "cd")
+		|| !ft_strcmp_lu(cmd, "echo") || !ft_strcmp(cmd, "exit")
 		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "export")
-		|| !ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "pwd"))
+		|| !ft_strcmp_lu(cmd, "env") || !ft_strcmp_lu(cmd, "pwd"))
 		return (1);
 	return (0);
 }
 
 void	builtin_exec(t_prog *prog, char **cmd)
 {
-	if (ft_strcmp(cmd[0], "pwd") == 0)
+	if (ft_strcmp_lu(cmd[0], "pwd") == 0)
 		ft_pwd(prog);
-	else if (ft_strcmp(cmd[0], "env") == 0)
+	else if (ft_strcmp_lu(cmd[0], "env") == 0)
 		ft_env(prog);
-	else if (ft_strcmp(cmd[0], "echo") == 0)
+	else if (ft_strcmp_lu(cmd[0], "echo") == 0)
 		echo_cmd(prog, cmd);
 	else if (ft_strcmp(cmd[0], "export") == 0)
 		ft_export(prog, prog->env);
@@ -72,29 +72,12 @@ char	*env_name(char *str, int i, int len)
 	return (env);
 }
 
-char	*find_env(char *str, t_prog *prog, int i)
+int	ft_strcmp_lu(char *s1, char *s2)
 {
-	char	*ret;
-	char	tmp[2];
+	int	i;
 
-	ret = NULL;
-	tmp[1] = '\0';
-	while (str[i])
-	{
-		if (str[i] == 1 && str[i + 1] != '\0')
-		{
-			do_env(str, ++i, prog, &ret);
-			i += env_len(str, i);
-		}
-		if (str[i])
-		{
-			if (str[i] == 1)
-				tmp[0] = '$';
-			else
-				tmp[0] = str[i];
-			ret = ft_strjoin(ret, tmp, 1);
-			++i;
-		}
-	}
-	return (ret);
+	i = 0;
+	while ((s1[i] == s2[i] || s1[i] + 32 == s2[i]) && s1[i] && s2[i])
+		i++;
+	return (s1[i] - s2[i]);
 }
