@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 00:10:45 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/03 15:59:13 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:35:39 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	pipe_exec(t_prog *prog, char *path, char **cmd)
 			dup2(prog->pipfd[pip - 2], 0);
 		stat = execve(path, cmd, prog->env);
 	}
-	print_error_d(prog, path);
+	print_error_d(path);
 	close_pipes(prog);
 	exit(stat);
 }

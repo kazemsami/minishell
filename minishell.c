@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:07:13 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/03 18:43:25 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/06 15:46:07 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,10 @@ void	shell(t_prog *prog)
 	while (i < g_pid.size)
 	{
 		waitpid(g_pid.pid[i], &g_pid.status[i], 0);
-		if (g_pid.status[i])
+		if (g_pid.status[i] && g_pid.status[i] != 11)
 			prog->ret = g_pid.status[i] / 256;
+		else if (g_pid.status[i] == 11)
+			prog->ret = 127;
 		++i;
 	}
 	reset_fd(prog);

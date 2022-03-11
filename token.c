@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 20:22:58 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/01 15:45:37 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/09 12:50:59 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ void	cpy_str(char *line, char *str, int *i, int *z)
 	c = 0;
 	while (line[*i])
 	{
-		if (!c && (line[*i] == '\'' || line[*i] == '\"'))
+		if (line[*i] == 1 && line[(*i) + 1]
+			&& (line[(*i) + 1] == '\'' || line[(*i) + 1] == '\"'))
+			;
+		else if (!c && (line[*i] == '\'' || line[*i] == '\"'))
 			c = line[*i];
 		else if (c == line[*i])
 			c = 0;
@@ -82,6 +85,8 @@ void	cpy_str(char *line, char *str, int *i, int *z)
 				break ;
 			str[(*z)++] = line[*i];
 		}
+		if (line[*i] == '\"')
+			str[(*z)++] = line[*i];
 		(*i)++;
 	}
 }

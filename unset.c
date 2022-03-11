@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:45:48 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/02 18:22:16 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:14:16 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ static	char	**ft_change_unset_env(t_prog *prog, char **env, int tmp)
 	int		i;
 	int		size;
 
-	i = -1;
 	size = ft_env_size(env);
 	new_env = (char **)malloc(sizeof(char *) * size);
 	if (!new_env)
@@ -49,10 +48,15 @@ static	char	**ft_change_unset_env(t_prog *prog, char **env, int tmp)
 		prog->ret = 1;
 		return (NULL);
 	}
+	i = -1;
 	while (++i < tmp)
 		new_env[i] = env[i];
-	while (i++ < size - 1)
-		new_env[i - 1] = env[i];
+	free (env[tmp]);
+	while (i < size - 1)
+	{
+		new_env[i] = env[i + 1];
+		i++;
+	}
 	new_env[i] = NULL;
 	free(env);
 	return (new_env);
@@ -87,5 +91,21 @@ void	ft_unset(t_prog *prog, char **env)
 				prog->env = ft_change_unset_env(prog, prog->env, tmp);
 		}
 		i++;
+	}
+}
+
+void	remove_quotes(char **cmd)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (cmd[i])
+	{
+		tmp = fandr_quotes(cmd[i]);
+		free(cmd[i]);
+		cmd[i] = tmp;
+		++i;
 	}
 }

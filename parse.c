@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/03 18:43:38 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:57:54 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ void	cnt_notsep(char *line, int i, int *cnt)
 	c = 0;
 	while (line[i])
 	{
+		if (line[i] == 1 && line[i + 1]
+			&& (line[i + 1] == '\'' || line[i + 1] == '\"'))
+			(*cnt)--;
 		if (!c && (line[i] == '\'' || line[i] == '\"'))
 			c = line[i];
 		else if (c == line[i])
@@ -60,6 +63,8 @@ void	cnt_notsep(char *line, int i, int *cnt)
 				break ;
 			(*cnt)++;
 		}
+		if (line[i] == '\"')
+			(*cnt)++;
 		++i;
 	}
 }
@@ -73,7 +78,7 @@ int	parseline(t_prog *prog)
 	line = readline("Minishell> ");
 	if (!line)
 	{
-		printf("\n");
+		ft_putendl_fd("exit", 1);
 		return (1);
 	}
 	if (line[0])
@@ -104,8 +109,11 @@ void	parse_exec(t_prog *prog, int i)
 	{
 		if (ft_strchr(cmd[z], 1))
 			expand(&cmd[z], prog);
+		if (cmd[z][0] == '\0')
+			cmd = remove_cmd(cmd, z--);
 		++z;
 	}
+	remove_quotes(cmd);
 	if (is_builtin(cmd[0]))
 		builtin_chk(prog, cmd);
 	else

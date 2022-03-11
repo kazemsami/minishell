@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 22:59:30 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/02 17:00:00 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/10 16:50:19 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,31 @@ void	echo_cmd(t_prog *prog, char **cmd)
 	if (!flag)
 		printf("\n");
 	prog->ret = 0;
+}
+
+char	**remove_cmd(char **cmd, int pos)
+{
+	char	**new_cmd;
+	int		i;
+	int		size;
+
+	size = ft_env_size(cmd);
+	new_cmd = (char **)malloc(sizeof(char *) * size);
+	if (!new_cmd)
+		return (NULL);
+	i = 0;
+	while (i < pos)
+	{
+		new_cmd[i] = cmd[i];
+		++i;
+	}
+	while (i < size - 1)
+	{
+		new_cmd[i] = cmd[i + 1];
+		i++;
+	}
+	free(cmd[pos]);
+	new_cmd[i] = NULL;
+	free(cmd);
+	return (new_cmd);
 }
