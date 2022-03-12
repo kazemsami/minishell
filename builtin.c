@@ -31,9 +31,9 @@ void	builtin_exec(t_prog *prog, char **cmd)
 	else if (ft_strcmp_lu(cmd[0], "echo") == 0)
 		echo_cmd(prog, cmd);
 	else if (ft_strcmp(cmd[0], "export") == 0)
-		ft_export(prog, prog->env);
+		ft_export(prog);
 	else if (ft_strcmp(cmd[0], "unset") == 0)
-		ft_unset(prog, prog->env);
+		ft_unset(prog);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
 		ft_cd(prog, prog->env);
 	else if (ft_strcmp(cmd[0], "exit") == 0)

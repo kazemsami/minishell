@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/10 16:57:54 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:10:57 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,10 @@ void	cnt_notsep(char *line, int i, int *cnt)
 		{
 			if ((line[i] == '>' || line[i] == '|' || line[i] == '<') && !c)
 				break ;
-			(*cnt)++;
+			if (line[i] != '\"' && line[i] != '\'')
+				(*cnt)++;
 		}
-		if (line[i] == '\"')
+		if (line[i] == '\"' || line[i] == '\'')
 			(*cnt)++;
 		++i;
 	}
@@ -108,9 +109,12 @@ void	parse_exec(t_prog *prog, int i)
 	while (cmd[z])
 	{
 		if (ft_strchr(cmd[z], 1))
+		{
 			expand(&cmd[z], prog);
-		if (cmd[z][0] == '\0')
-			cmd = remove_cmd(cmd, z--);
+			if (cmd[z][0] == '\0')
+				cmd = remove_cmd(cmd, z--);
+		}
+		printf("%s\n", cmd[z]);
 		++z;
 	}
 	remove_quotes(cmd);

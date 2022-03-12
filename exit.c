@@ -35,12 +35,15 @@ static int	ft_check_digit(char *str)
 	int						sign;
 
 	sign = 1;
+	number = 0;
 	while (*str == ' ')
 		str++;
-	if (*str == '-')
-		sign = -1;
-	if (*str == '+' || *str == '-')
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
 		str++;
+	}
 	while (*str)
 	{
 		if (!ft_isdigit(*str))

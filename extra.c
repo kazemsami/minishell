@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/10 16:17:06 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:24:28 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,25 +98,13 @@ char	*fandr_quotes(char *str)
 	int		chk;
 	char	*tmp;
 
-	i = -1;
+	i = 0;
 	tmp = ft_strdup(str);
 	chk = 0;
-	while (tmp[++i])
+	while (tmp[i])
 	{
-		if (tmp[i] == '\"' && chk == 0)
-		{
-			chk = 1;
-			tmp = rmv_quote(tmp, i--);
-		}
-		else if (tmp[i] == '\'' && chk == 0)
-			chk = 2;
-		else if (tmp[i] == '\"' && chk == 1)
-		{
-			chk = 0;
-			tmp = rmv_quote(tmp, i--);
-		}
-		else if (tmp[i] == '\'' && chk == 2)
-			chk = 0;
+		quotes_extra(&tmp, &i, &chk);
+		++i;
 	}
 	return (tmp);
 }

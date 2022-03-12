@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 20:22:58 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/09 12:50:59 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:11:56 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,10 @@ void	cpy_str(char *line, char *str, int *i, int *z)
 		{
 			if ((line[*i] == '>' || line[*i] == '|' || line[*i] == '<') && !c)
 				break ;
-			str[(*z)++] = line[*i];
+			if (line[*i] != '\"' && line[*i] != '\'')
+				str[(*z)++] = line[*i];
 		}
-		if (line[*i] == '\"')
+		if (line[*i] == '\"' || line[*i] == '\'')
 			str[(*z)++] = line[*i];
 		(*i)++;
 	}

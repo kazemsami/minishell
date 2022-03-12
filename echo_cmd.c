@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 22:59:30 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/10 16:50:19 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/12 19:34:50 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,28 @@ char	**remove_cmd(char **cmd, int pos)
 	new_cmd[i] = NULL;
 	free(cmd);
 	return (new_cmd);
+}
+
+void	quotes_extra(char **str, int *i, int *chk)
+{
+	if ((*str)[*i] == '\"' && *chk == 0)
+	{
+		*chk = 1;
+		*str = rmv_quote(*str, (*i)--);
+	}
+	else if ((*str)[*i] == '\'' && *chk == 0)
+	{
+		*chk = 2;
+		*str = rmv_quote(*str, (*i)--);
+	}
+	else if ((*str)[*i] == '\"' && *chk == 1)
+	{
+		*chk = 0;
+		*str = rmv_quote(*str, (*i)--);
+	}
+	else if ((*str)[*i] == '\'' && *chk == 2)
+	{
+		*chk = 0;
+		*str = rmv_quote(*str, (*i)--);
+	}
 }

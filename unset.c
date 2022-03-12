@@ -74,20 +74,20 @@ int	ft_check_variable(char *com, char *env)
 	return (0);
 }
 
-void	ft_unset(t_prog *prog, char **env)
+void	ft_unset(t_prog *prog)
 {
 	int	tmp;
 	int	i;
 
 	i = 1;
-	if (!(env) || !(prog->token[i]))
+	if (!(prog->env) || !(prog->token[i]))
 		return ;
 	while (prog->token[i] && ft_check_unset_error(prog, prog->token[i]))
 	{
-		tmp = ft_find_env(env, prog->token[i]);
+		tmp = ft_find_env(prog->env, prog->token[i]);
 		if (tmp >= 0)
 		{
-			if (ft_check_variable(prog->token[i], env[tmp]))
+			if (ft_check_variable(prog->token[i], prog->env[tmp]))
 				prog->env = ft_change_unset_env(prog, prog->env, tmp);
 		}
 		i++;
