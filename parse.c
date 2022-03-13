@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/12 19:10:57 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/13 12:48:51 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ void	parse_exec(t_prog *prog, int i)
 			if (cmd[z][0] == '\0')
 				cmd = remove_cmd(cmd, z--);
 		}
-		printf("%s\n", cmd[z]);
 		++z;
 	}
 	remove_quotes(cmd);
