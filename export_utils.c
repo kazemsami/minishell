@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:48:55 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/02 15:27:08 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:12:47 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,12 @@ char	**ft_distr_export(t_prog *prog, char **env)
 		i++;
 	}
 	return (new_env);
+}
+
+void	readline_fix(void)
+{
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+	ft_putendl_fd("\x1B[Aexit", 1);
 }

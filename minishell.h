@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/14 16:26:35 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:10:07 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,7 @@ char	**remove_cmd(char **cmd, int pos);
 void	quotes_extra(char **str, int *i, int *chk);
 char	*rmv_quote(char *str, int i);
 void	close_pip(t_prog *prog);
+void	readline_fix(void);
 
 extern t_pid	g_pid;
 
