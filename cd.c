@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:51:40 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/03 15:19:11 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/13 16:25:21 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	ft_find_home_env(t_prog *prog, char **env)
 	return (i);
 }
 
-void	ft_cd(t_prog *prog, char **env)
+void	ft_cd(t_prog *prog, char **env, char **cmd)
 {
 	int		i;
 	char	*home;
@@ -101,13 +101,13 @@ void	ft_cd(t_prog *prog, char **env)
 		return ;
 	path = ft_get_pwd(prog);
 	home = env[i] + 5;
-	if (!prog->token[1])
+	if (!cmd[1])
 		ft_change_dir(home, prog);
-	else if (!ft_strncmp(prog->token[1], "..", 3)
-		&& ft_strlen(prog->token[1]) == 2)
+	else if (!ft_strncmp(cmd[1], "..", 3)
+		&& ft_strlen(cmd[1]) == 2)
 		ft_go_to_dir(path, prog);
 	else
-		ft_change_dir(prog->token[1], prog);
+		ft_change_dir(cmd[1], prog);
 	ft_change_env(prog, env, path);
 	free(path);
 }

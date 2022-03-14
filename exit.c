@@ -6,35 +6,34 @@
 /*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 18:33:05 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/07 11:03:39 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/13 16:22:02 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	ft_full_exit(t_prog *prog)
+static void	ft_full_exit(t_prog *prog, char **cmd)
 {
 	free_split(prog->env);
 	free_split(prog->token);
 	free(prog->type);
+	free_split(cmd);
 	exit(prog->ret);
 }
 
-static void	ft_print_error_exit(t_prog *prog)
+static void	ft_print_error_exit(t_prog *prog, char **cmd)
 {
 	ft_putendl_fd("exit", 2);
 	ft_putstr_fd("minishell: exit: ", 2);
-	ft_putstr_fd(prog->token[1], 2);
+	ft_putstr_fd(cmd[1], 2);
 	ft_putendl_fd(": numeric argument required", 2);
 	prog->ret = 255;
 }
 
-static int	ft_check_digit(char *str)
+static int	ft_check_digit(char *str, int sign)
 {
-	unsigned long long int	number;
-	int						sign;
+	unsigned long long		number;
 
-	sign = 1;
 	number = 0;
 	while (*str == ' ')
 		str++;
@@ -44,17 +43,19 @@ static int	ft_check_digit(char *str)
 			sign = -1;
 		str++;
 	}
+	if (ft_strlen(str) > 19)
+		return (0);
 	while (*str)
 	{
 		if (!ft_isdigit(*str))
 			return (0);
 		number = (number * 10) + (*str - '0');
+		if (number > 9223372036854775808U && sign == -1)
+			return (0);
+		else if (number > 9223372036854775807 && sign == 1)
+			return (0);
 		str++;
 	}
-	if (number > 9223372036854775808U && sign == -1)
-		return (0);
-	else if (number > 9223372036854775807 && sign == 1)
-		return (0);
 	return (1);
 }
 
@@ -82,16 +83,16 @@ static int	ft_atoi_ms(char *str)
 	return ((number * sign) % 256);
 }
 
-void	ft_exit(t_prog *prog)
+void	ft_exit(t_prog *prog, char **cmd)
 {
-	if (prog->token[1])
+	if (cmd[1])
 	{
-		if (!ft_check_digit(prog->token[1]))
-			ft_print_error_exit(prog);
+		if (!ft_check_digit(cmd[1], 1))
+			ft_print_error_exit(prog, cmd);
 		else
 		{
-			prog->ret = ft_atoi_ms(prog->token[1]);
-			if (prog->token[2])
+			prog->ret = ft_atoi_ms(cmd[1]);
+			if (cmd[2])
 			{
 				ft_putendl_fd("exit", 2);
 				ft_putendl_fd("minishell: exit: too many arguments", 2);
@@ -104,5 +105,5 @@ void	ft_exit(t_prog *prog)
 	}
 	else
 		ft_putendl_fd("exit", 1);
-	ft_full_exit(prog);
+	ft_full_exit(prog, cmd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <stasy247@mail.ru>                +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:48:08 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/02 17:02:38 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/13 16:23:17 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,14 @@ static	void	ft_update_var(t_prog *prog, char *str, char *var)
 	}
 }
 
-void	ft_export(t_prog *prog)
+void	ft_export(t_prog *prog, char **cmd)
 {
 	int		i;
 	char	*var;
 	char	**new_env;
 
 	i = 1;
-	if (!(prog->token[i]))
+	if (!(cmd[i]))
 	{
 		new_env = ft_distr_export(prog, prog->env);
 		if (new_env)
@@ -100,13 +100,13 @@ void	ft_export(t_prog *prog)
 			free(new_env);
 		}
 	}
-	while (prog->token[i] && ft_check_export_error(prog, prog->token[i]))
+	while (cmd[i] && ft_check_export_error(prog, cmd[i]))
 	{
-		var = ft_substr(prog->token[i], 0, ft_searh_index(prog->token[i], '='));
+		var = ft_substr(cmd[i], 0, ft_searh_index(cmd[i], '='));
 		if (ft_var_exist(prog->env, var))
-			ft_update_var(prog, prog->token[i], var);
+			ft_update_var(prog, cmd[i], var);
 		else
-			ft_add_new_env(prog, prog->token[i]);
+			ft_add_new_env(prog, cmd[i]);
 		free(var);
 		i++;
 	}

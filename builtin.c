@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:33:15 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/04 18:09:32 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/13 16:19:08 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,13 @@ void	builtin_exec(t_prog *prog, char **cmd)
 	else if (ft_strcmp_lu(cmd[0], "echo") == 0)
 		echo_cmd(prog, cmd);
 	else if (ft_strcmp(cmd[0], "export") == 0)
-		ft_export(prog);
+		ft_export(prog, cmd);
 	else if (ft_strcmp(cmd[0], "unset") == 0)
-		ft_unset(prog);
+		ft_unset(prog, cmd);
 	else if (ft_strcmp(cmd[0], "cd") == 0)
-		ft_cd(prog, prog->env);
+		ft_cd(prog, prog->env, cmd);
 	else if (ft_strcmp(cmd[0], "exit") == 0)
-		ft_exit(prog);
+		ft_exit(prog, cmd);
 }
 
 int	env_len(char *str, int i)

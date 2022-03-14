@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 22:23:17 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/06 15:35:01 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:28:33 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ void	builtin_pipe(t_prog *prog)
 		dup2(prog->pipfd[pip + 1], 1);
 	if (prog->pipnum > 0)
 		dup2(prog->pipfd[pip - 2], 0);
+	close_pip(prog);
 }
 
 void	reset_fd(t_prog *prog)

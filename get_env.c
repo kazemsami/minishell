@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 00:52:44 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/04 15:16:47 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:38:20 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,19 @@ void	builtin_chk(t_prog *prog, char **cmd)
 {
 	if (pipe_size(prog) > 0 && !prog->redoutput)
 	{
-		builtin_pipe(prog);
-		builtin_exec(prog, cmd);
+		g_pid.pid[g_pid.index] = fork();
+		if (g_pid.pid[g_pid.index] == 0)
+		{
+			builtin_pipe(prog);
+			builtin_exec(prog, cmd);
+			exit(0);
+		}
 		reset_fd(prog);
+		close_piptmp(prog);
+		g_pid.index++;
 	}
 	else
 		builtin_exec(prog, cmd);
-	close_piptmp(prog);
 }
 
 void	print_error_c(t_prog *prog, char *str)

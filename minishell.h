@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/12 19:26:13 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/14 16:26:35 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,13 +108,13 @@ int		check_hyphen(char *line, int i);
 char	*remove_tabs(char *line);
 void	redir(t_prog *prog, int z);
 int		ft_strcmp_lu(char *s1, char *s2);
-void	ft_exit(t_prog *prog);
+void	ft_exit(t_prog *prog, char **cmd);
 void	ft_env(t_prog *prog);
 int		ft_env_size(char **env);
-void	ft_cd(t_prog *prog, char **env);
+void	ft_cd(t_prog *prog, char **env, char **cmd);
 char	*ft_get_pwd(t_prog *prog);
-void	ft_export(t_prog *prog);
-void	ft_unset(t_prog *prog);
+void	ft_export(t_prog *prog, char **cmd);
+void	ft_unset(t_prog *prog, char **cmd);
 int		ft_find_env(char **env, char *str);
 int		ft_searh_index(char *str, char c);
 char	**ft_distr_export(t_prog *prog, char **env);
@@ -140,6 +140,7 @@ char	*fandr_quotes(char *str);
 char	**remove_cmd(char **cmd, int pos);
 void	quotes_extra(char **str, int *i, int *chk);
 char	*rmv_quote(char *str, int i);
+void	close_pip(t_prog *prog);
 
 extern t_pid	g_pid;
 

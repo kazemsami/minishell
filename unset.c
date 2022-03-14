@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:45:48 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/10 16:14:16 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/13 16:26:22 by anifanto         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,20 +74,20 @@ int	ft_check_variable(char *com, char *env)
 	return (0);
 }
 
-void	ft_unset(t_prog *prog)
+void	ft_unset(t_prog *prog, char **cmd)
 {
 	int	tmp;
 	int	i;
 
 	i = 1;
-	if (!(prog->env) || !(prog->token[i]))
+	if (!(prog->env) || !(cmd[i]))
 		return ;
-	while (prog->token[i] && ft_check_unset_error(prog, prog->token[i]))
+	while (cmd[i] && ft_check_unset_error(prog, cmd[i]))
 	{
-		tmp = ft_find_env(prog->env, prog->token[i]);
+		tmp = ft_find_env(prog->env, cmd[i]);
 		if (tmp >= 0)
 		{
-			if (ft_check_variable(prog->token[i], prog->env[tmp]))
+			if (ft_check_variable(cmd[i], prog->env[tmp]))
 				prog->env = ft_change_unset_env(prog, prog->env, tmp);
 		}
 		i++;

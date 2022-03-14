@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/13 12:48:51 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/14 17:02:38 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,10 @@ int	parseline(t_prog *prog)
 	line = readline("Minishell> ");
 	if (!line)
 	{
-		ft_putendl_fd("exit", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putendl_fd("\x1B[Aexit", 1);
 		return (1);
 	}
 	if (line[0])
@@ -117,9 +120,9 @@ void	parse_exec(t_prog *prog, int i)
 		++z;
 	}
 	remove_quotes(cmd);
-	if (is_builtin(cmd[0]))
+	if (cmd[0] && is_builtin(cmd[0]))
 		builtin_chk(prog, cmd);
-	else
+	else if (cmd[0])
 		exec_cmd(prog, cmd);
 	free_split(cmd);
 	prog->delim = 0;
