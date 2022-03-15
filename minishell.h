@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/14 17:10:07 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/15 17:59:18 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,12 +136,13 @@ void	set_default(t_prog *prog);
 void	print_error_d(char *str);
 void	fix_global(t_prog *prog);
 void	remove_quotes(char **cmd);
-char	*fandr_quotes(char *str);
+void	fandr_quotes(char **str);
 char	**remove_cmd(char **cmd, int pos);
-void	quotes_extra(char **str, int *i, int *chk);
-char	*rmv_quote(char *str, int i);
+char	*quotes_extra(char *str);
 void	close_pip(t_prog *prog);
 void	readline_fix(void);
+void	find_quote(char *str, int *i, int *chk);
+int		cnt_noquotes(char *str);
 
 extern t_pid	g_pid;
 

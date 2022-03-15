@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 22:59:30 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/14 16:26:24 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/15 18:02:12 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,28 +79,33 @@ char	**remove_cmd(char **cmd, int pos)
 	return (new_cmd);
 }
 
-void	quotes_extra(char **str, int *i, int *chk)
+char	*quotes_extra(char *str)
 {
-	if ((*str)[*i] == '\"' && *chk == 0)
+	char	*tmp;
+	int		i;
+	int		chk;
+	int		z;
+
+	tmp = malloc(sizeof(char) * (cnt_noquotes(str) + 1));
+	i = 0;
+	chk = 0;
+	z = 0;
+	while (str[i])
 	{
-		*chk = 1;
-		*str = rmv_quote(*str, (*i)--);
+		if (str[i] == '\"' && chk == 0)
+			chk = 1;
+		else if (str[i] == '\'' && chk == 0)
+			chk = 2;
+		else if (str[i] == '\"' && chk == 1)
+			chk = 0;
+		else if (str[i] == '\'' && chk == 2)
+			chk = 0;
+		else
+			tmp[z++] = str[i];
+		++i;
 	}
-	else if ((*str)[*i] == '\'' && *chk == 0)
-	{
-		*chk = 2;
-		*str = rmv_quote(*str, (*i)--);
-	}
-	else if ((*str)[*i] == '\"' && *chk == 1)
-	{
-		*chk = 0;
-		*str = rmv_quote(*str, (*i)--);
-	}
-	else if ((*str)[*i] == '\'' && *chk == 2)
-	{
-		*chk = 0;
-		*str = rmv_quote(*str, (*i)--);
-	}
+	tmp[z] = '\0';
+	return (tmp);
 }
 
 void	close_pip(t_prog *prog)

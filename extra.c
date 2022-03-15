@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/12 19:24:28 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/15 18:12:04 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,41 +70,11 @@ void	fix_global(t_prog *prog)
 	}
 }
 
-char	*rmv_quote(char *str, int i)
+void	remove_quotes(char **cmd)
 {
-	char	*new;
-	int		z;
-	int		a;
-
-	new = malloc(sizeof(char) * ft_strlen(str));
-	if (!new)
-		return (NULL);
-	a = 0;
-	z = 0;
-	while (str[a])
-	{
-		if (a == i)
-			a++;
-		new[z++] = str[a++];
-	}
-	new[z] = '\0';
-	free(str);
-	return (new);
-}
-
-char	*fandr_quotes(char *str)
-{
-	int		i;
-	int		chk;
 	char	*tmp;
 
-	i = 0;
-	tmp = ft_strdup(str);
-	chk = 0;
-	while (tmp[i])
-	{
-		quotes_extra(&tmp, &i, &chk);
-		++i;
-	}
-	return (tmp);
+	tmp = quotes_extra(*cmd);
+	free(*cmd);
+	*cmd = tmp;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:45:48 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/13 16:26:22 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/15 18:03:18 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,18 +94,28 @@ void	ft_unset(t_prog *prog, char **cmd)
 	}
 }
 
-void	remove_quotes(char **cmd)
+int	cnt_noquotes(char *str)
 {
-	int		i;
-	char	*tmp;
+	int	chk;
+	int	i;
+	int	cnt;
 
+	chk = 0;
+	cnt = 0;
 	i = 0;
-	tmp = NULL;
-	while (cmd[i])
+	while (str[i])
 	{
-		tmp = fandr_quotes(cmd[i]);
-		free(cmd[i]);
-		cmd[i] = tmp;
+		if (str[i] == '\"' && chk == 0)
+			chk = 1;
+		else if (str[i] == '\'' && chk == 0)
+			chk = 2;
+		else if (str[i] == '\"' && chk == 1)
+			chk = 0;
+		else if (str[i] == '\'' && chk == 2)
+			chk = 0;
+		else
+			cnt++;
 		++i;
 	}
+	return (cnt);
 }

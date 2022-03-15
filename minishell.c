@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:07:13 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/06 15:46:07 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/15 19:27:57 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,12 @@ void	run_prog(t_prog *prog)
 		}
 		if ((i == 0 || (i > 0 && prog->type[i - 1] == PIPE))
 			&& !prog->err && prog->type[i] == CMD)
+		{
 			parse_exec(prog, i);
+			prog->delim = 0;
+			prog->redinput = 0;
+			prog->redoutput = 0;
+		}
 		i = next_pipe(prog, i) + 1;
 		z = i;
 		prog->pipnum++;
