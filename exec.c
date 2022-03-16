@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:53:09 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/06 15:34:05 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/16 18:51:08 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,15 @@ void	fork_and_exec(char *path, char **cmd, t_prog *prog)
 		g_pid.pid[g_pid.index] = fork();
 		if (g_pid.pid[g_pid.index] == 0)
 			pipe_exec(prog, path, cmd);
-		close_piptmp(prog);
+		if (!prog->exec)
+			close_piptmp(prog);
 		g_pid.index++;
 	}
 	else
+	{
 		print_error_c(prog, path);
+		prog->parent = 1;
+	}
 }
 
 int	exec_cmd(t_prog *prog, char **cmd)

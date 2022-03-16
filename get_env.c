@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 00:52:44 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/14 16:38:20 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 18:28:05 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,22 @@ void	builtin_chk(t_prog *prog, char **cmd)
 		{
 			builtin_pipe(prog);
 			builtin_exec(prog, cmd);
+			close_pipes(prog);
+			fclose(stdout);
+			fclose(stderr);
+			fclose(stdin);
+			close(prog->in);
+			close(prog->out);
 			exit(0);
 		}
-		reset_fd(prog);
 		close_piptmp(prog);
 		g_pid.index++;
 	}
 	else
+	{
 		builtin_exec(prog, cmd);
+		prog->parent = 1;
+	}
 }
 
 void	print_error_c(t_prog *prog, char *str)
@@ -82,7 +90,10 @@ void	loop_delim(t_prog *prog, char *delim, int fd, int z)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			readline_fix(1);
 			break ;
+		}
 		if (prog->type[z - 1] == DELIM_TAB)
 			line = remove_tabs(line);
 		if (!ft_strcmp(line, delim))

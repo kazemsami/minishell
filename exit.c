@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 18:33:05 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/13 16:22:02 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/16 18:28:48 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,14 @@ static void	ft_full_exit(t_prog *prog, char **cmd)
 	free_split(prog->env);
 	free_split(prog->token);
 	free(prog->type);
+	free(g_pid.pid);
+	free(g_pid.status);
 	free_split(cmd);
+	close(prog->in);
+	close(prog->out);
+	fclose(stdout);
+	fclose(stdin);
+	fclose(stderr);
 	exit(prog->ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:48:55 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/14 17:12:47 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 17:26:29 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,23 @@ char	**ft_distr_export(t_prog *prog, char **env)
 	return (new_env);
 }
 
-void	readline_fix(void)
+void	readline_fix(int i)
 {
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
-	ft_putendl_fd("\x1B[Aexit", 1);
+	if (i == 0)
+	{
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+		ft_putendl_fd("\x1B[Aexit", 1);
+	}
+	else
+	{
+		ft_putstr_fd("\x1B[A", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	fclose(stdout);
+	fclose(stdin);
+	fclose(stderr);
 }

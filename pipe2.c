@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 22:23:17 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/14 16:28:33 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 18:25:40 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ void	close_pipes(t_prog *prog)
 	int	i;
 	int	sz;
 
-	sz = prog->pipes * 2 + 1;
+	sz = prog->pipes * 2;
 	i = 0;
-	while (i <= sz)
+	while (i < sz)
 		close(prog->pipfd[i++]);
 }
 

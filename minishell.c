@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:07:13 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/15 19:27:57 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 18:25:33 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	shell(t_prog *prog)
 	fix_global(prog);
 	run_prog(prog);
 	i = 0;
-	while (i < g_pid.size)
+	while (i < g_pid.size && !prog->parent)
 	{
 		waitpid(g_pid.pid[i], &g_pid.status[i], 0);
 		if (g_pid.status[i] && g_pid.status[i] != 11)

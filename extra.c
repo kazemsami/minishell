@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/15 18:12:04 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 17:57:07 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	set_default(t_prog *prog)
 	prog->delim = 0;
 	prog->redinput = 0;
 	prog->redoutput = 0;
+	prog->parent = 0;
 	g_pid.size = 0;
 	g_pid.index = 0;
 	if (g_pid.pid)
@@ -65,8 +66,8 @@ void	fix_global(t_prog *prog)
 		g_pid.pid = malloc(sizeof(int) * 1);
 		g_pid.status = malloc(sizeof(int) * 1);
 		g_pid.size = 1;
-		ft_bzero(g_pid.pid, 1);
-		ft_bzero(g_pid.status, 1);
+		ft_memset(g_pid.pid, 1, 1);
+		ft_memset(g_pid.status, 1, 1);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/15 17:59:18 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/16 17:55:43 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef struct s_prog
 	int		exec;
 	int		redinput;
 	int		redoutput;
+	int		parent;
 	int		delim;
 	int		err;
 }	t_prog;
@@ -140,7 +141,7 @@ void	fandr_quotes(char **str);
 char	**remove_cmd(char **cmd, int pos);
 char	*quotes_extra(char *str);
 void	close_pip(t_prog *prog);
-void	readline_fix(void);
+void	readline_fix(int i);
 void	find_quote(char *str, int *i, int *chk);
 int		cnt_noquotes(char *str);
 
