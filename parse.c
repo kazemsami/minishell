@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 18:41:56 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:23:18 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	parseline(t_prog *prog)
 	line = readline("Minishell> ");
 	if (!line)
 	{
-		readline_fix(0);
+		readline_fix(prog, 0);
 		return (1);
 	}
 	if (line[0])

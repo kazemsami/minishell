@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 17:55:43 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 17:31:28 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,11 @@ typedef struct s_pid
 	int	*status;
 	int	size;
 	int	index;
+	int	in;
+	int	out;
+	int	fd;
+	int	pipsize;
+	int	*pipfd;
 }	t_pid;
 
 int		exec_cmd(t_prog *prog, char **cmd);
@@ -141,9 +146,11 @@ void	fandr_quotes(char **str);
 char	**remove_cmd(char **cmd, int pos);
 char	*quotes_extra(char *str);
 void	close_pip(t_prog *prog);
-void	readline_fix(int i);
+void	readline_fix(t_prog *prog, int i);
 void	find_quote(char *str, int *i, int *chk);
 int		cnt_noquotes(char *str);
+void	close_std(t_prog *prog, int fd);
+void	weird_close(void);
 
 extern t_pid	g_pid;
 

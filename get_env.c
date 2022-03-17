@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 00:52:44 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 18:28:05 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 16:40:22 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,7 @@ void	builtin_chk(t_prog *prog, char **cmd)
 			builtin_pipe(prog);
 			builtin_exec(prog, cmd);
 			close_pipes(prog);
-			fclose(stdout);
-			fclose(stderr);
-			fclose(stdin);
-			close(prog->in);
-			close(prog->out);
+			close_std(prog, -1);
 			exit(0);
 		}
 		close_piptmp(prog);
@@ -60,7 +56,9 @@ void	builtin_chk(t_prog *prog, char **cmd)
 	else
 	{
 		builtin_exec(prog, cmd);
-		prog->parent = 1;
+		if (pipe_size(prog) > 0)
+			close_piptmp(prog);
+		g_pid.status[g_pid.index++] = -1;
 	}
 }
 
@@ -91,7 +89,7 @@ void	loop_delim(t_prog *prog, char *delim, int fd, int z)
 		line = readline("> ");
 		if (!line)
 		{
-			readline_fix(1);
+			readline_fix(prog, 1);
 			break ;
 		}
 		if (prog->type[z - 1] == DELIM_TAB)
@@ -106,5 +104,6 @@ void	loop_delim(t_prog *prog, char *delim, int fd, int z)
 		ft_putendl_fd(line, fd);
 		free(line);
 	}
+	close_std(prog, fd);
 	exit(0);
 }

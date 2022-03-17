@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 17:57:07 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 17:29:35 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	set_default(t_prog *prog)
 	prog->delim = 0;
 	prog->redinput = 0;
 	prog->redoutput = 0;
+	g_pid.pipsize = 0;
 	prog->parent = 0;
 	g_pid.size = 0;
 	g_pid.index = 0;
@@ -60,6 +61,8 @@ void	fix_global(t_prog *prog)
 	{
 		prog->exec = 0;
 		pipe_init(prog);
+		g_pid.pipfd = prog->pipfd;
+		g_pid.pipsize = prog->pipes;
 	}
 	else
 	{

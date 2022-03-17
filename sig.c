@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 23:09:18 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/03 19:56:02 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 17:40:04 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,40 @@ void	sig_quit(int sig)
 void	interrupt_delim(int sig)
 {
 	(void)sig;
-	write(1, "\n", 1);
-	exit(0);
+	rl_on_new_line();
+	rl_redisplay();
+	ft_putstr_fd("  \b\b", 2);
+	write(2, "\n", 1);
+	close(g_pid.in);
+	close(g_pid.out);
+	close(g_pid.fd);
+	weird_close();
+	fclose(stdout);
+	fclose(stdin);
+	fclose(stderr);
+	exit(1);
 }
 
 int	next_pipe(t_prog *prog, int i)
 {
+	if (prog->err && pipe_size(prog) > 0)
+	{
+		g_pid.status[g_pid.index++] = -1;
+		close_piptmp(prog);
+		prog->ret = 1;
+	}
+	else if (prog->err)
+	{
+		g_pid.status[g_pid.index++] = -1;
+		prog->ret = 1;
+	}
+	if (prog->redoutput)
+		dup2(prog->out, 1);
+	if (prog->redinput || prog->delim)
+		dup2(prog->in, 0);
+	prog->delim = 0;
+	prog->redinput = 0;
+	prog->redoutput = 0;
 	while (prog->token[i])
 	{
 		if (prog->type[i] == PIPE)

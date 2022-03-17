@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:07:13 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 18:25:33 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 17:29:22 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,9 @@ void	run_prog(t_prog *prog)
 			&& !prog->err && prog->type[i] == CMD)
 		{
 			parse_exec(prog, i);
-			prog->delim = 0;
-			prog->redinput = 0;
-			prog->redoutput = 0;
 		}
 		i = next_pipe(prog, i) + 1;
+		prog->err = 0;
 		z = i;
 		prog->pipnum++;
 	}
@@ -68,13 +66,16 @@ void	shell(t_prog *prog)
 	fix_global(prog);
 	run_prog(prog);
 	i = 0;
-	while (i < g_pid.size && !prog->parent)
+	while (i < g_pid.size && !prog->parent && !prog->err)
 	{
-		waitpid(g_pid.pid[i], &g_pid.status[i], 0);
-		if (g_pid.status[i] && g_pid.status[i] != 11)
-			prog->ret = g_pid.status[i] / 256;
-		else if (g_pid.status[i] == 11)
-			prog->ret = 127;
+		if (g_pid.status[i] != -1)
+		{
+			waitpid(g_pid.pid[i], &g_pid.status[i], 0);
+			if (g_pid.status[i] && g_pid.status[i] != 11)
+				prog->ret = g_pid.status[i] / 256;
+			else if (g_pid.status[i] == 11)
+				prog->ret = 127;
+		}
 		++i;
 	}
 	reset_fd(prog);

@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 00:10:45 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/16 18:50:04 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 17:38:35 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	redir_input(t_prog *prog, char *file)
 	prog->fdin = open(file, O_RDONLY);
 	if (prog->fdin == -1)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(file, 2);
 		ft_putendl_fd(" : No such file or directory", 2);
 		prog->ret = 1;
@@ -52,17 +53,24 @@ void	redir_delim(t_prog *prog, char *delim, int index)
 {
 	int		fd;
 	int		pid;
+	int		stat;
 
+	stat = 0;
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	fd = open(".tmpdelim", O_CREAT | O_WRONLY | O_APPEND, 0600);
 	if (fd == -1)
 		return ;
+	g_pid.fd = fd;
+	g_pid.in = prog->in;
+	g_pid.out = prog->out;
+	prog->delim = 1;
 	pid = fork();
 	if (!pid)
 		loop_delim(prog, delim, fd, index);
-	waitpid(pid, NULL, 0);
-	prog->delim = 1;
+	waitpid(pid, &stat, 0);
+	if (stat != 0)
+		prog->err = 1;
 	dup_delim(fd);
 	if (prog->type[next_op(prog, index)] == DELIM
 		|| prog->type[next_op(prog, index)] == DELIM_TAB)
@@ -79,8 +87,13 @@ void	pipe_init(t_prog *prog)
 	g_pid.size = sz + 1;
 	g_pid.pid = malloc(sizeof(int) * (sz + 1));
 	g_pid.status = malloc(sizeof(int) * (sz + 1));
-	ft_memset(g_pid.pid, 1, g_pid.size);
-	ft_memset(g_pid.status, 1, g_pid.size);
+	i = 0;
+	while (i < g_pid.size)
+	{
+		g_pid.pid[i] = 1;
+		g_pid.status[i] = 1;
+		++i;
+	}
 	prog->pipes = sz;
 	i = 0;
 	pfd = malloc(sizeof(int) * (sz * 2));
@@ -112,10 +125,6 @@ void	pipe_exec(t_prog *prog, char *path, char **cmd)
 		close_pipes(prog);
 	}
 	print_error_d(path);
-	fclose(stdout);
-	fclose(stdin);
-	fclose(stderr);
-	close(prog->in);
-	close(prog->out);
+	close_std(prog, -1);
 	exit(stat);
 }

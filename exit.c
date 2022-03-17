@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 18:33:05 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/16 18:28:48 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/17 13:51:17 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,7 @@ static void	ft_full_exit(t_prog *prog, char **cmd)
 	free(g_pid.pid);
 	free(g_pid.status);
 	free_split(cmd);
-	close(prog->in);
-	close(prog->out);
-	fclose(stdout);
-	fclose(stdin);
-	fclose(stderr);
+	close_std(prog, -1);
 	exit(prog->ret);
 }
 
