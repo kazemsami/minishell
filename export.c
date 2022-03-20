@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 15:48:08 by anifanto          #+#    #+#             */
-/*   Updated: 2022/03/13 16:23:17 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/03/20 14:04:45 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static int	ft_check_export_error(t_prog *prog, char *str)
 	{
 		ft_putstr_fd("minishell: export: `", 2);
 		ft_putstr_fd(str, 2);
-		ft_putendl_fd(" ': not a valid identifier", 2);
+		ft_putendl_fd("': not a valid identifier", 2);
 		prog->ret = 1;
 		return (0);
 	}
