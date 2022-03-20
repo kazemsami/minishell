@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 00:10:45 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/17 17:38:35 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/03/20 13:29:40 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ void	redir_output(t_prog *prog, char *file, int type)
 		prog->fdout = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (prog->fdout == -1)
 	{
-		ft_putendl_fd("Failed to create file with that name", 2);
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(file, 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		prog->ret = 1;
 		prog->err = 1;
 		return ;
@@ -40,7 +43,8 @@ void	redir_input(t_prog *prog, char *file)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(file, 2);
-		ft_putendl_fd(" : No such file or directory", 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		prog->ret = 1;
 		prog->err = 1;
 		return ;
