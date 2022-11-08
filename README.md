@@ -12,7 +12,13 @@ Minishell is a partial replica of the UNIX shell and command language Bash writt
  * Handling Redirections
 
 ### Installation
-`$ git clone https://github.com/kazemsami/minishell.git && cd minishell && make`
+```
+git clone https://github.com/kazemsami/minishell.git
+```
+```
+$ cd minishell
+$ make
+```
 #### If for example you have already built the progam and would like to run it on a docker container
 `$ make re` which will force clean all files and redo the build.
 
