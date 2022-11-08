@@ -12,8 +12,14 @@ Minishell is a partial replica of the UNIX shell and command language Bash writt
  * Handling Redirections
 
 ### Installation
+
+HTTPS
 ```
 git clone https://github.com/kazemsami/minishell.git
+```
+SSH
+```
+git clone git@github.com:kazemsami/minishell.git
 ```
 ```
 $ cd minishell
