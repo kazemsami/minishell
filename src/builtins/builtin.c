@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anifanto <anifanto@student.42abudhabi.a    +#+  +:+       +#+        */
+/*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/25 15:33:15 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/13 16:19:08 by anifanto         ###   ########.fr       */
+/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
