@@ -1,19 +1,20 @@
  # 42's Minishell project
  
  
- In this project you have to replicate bash using the C lanugage.
+Minishell is a partial replica of the UNIX shell and command language Bash written in the C lanugage.
  
  ### This projects tasks include
  
- * Parse input
- * Execute commands with piping functionality
- * Rebuild commands such as echo, cat, export etc...
- * Handle environmental variables
+ * Parsing input
+ * Executing commands with piping functionality
+ * Rebuilding commands such as echo, cat, export etc...
+ * Handling environmental variables
+ * Handling Redirections
 
-### Building the program
-`~ $ make` to build the program
+### Installation
+`$ git clone https://github.com/kazemsami/minishell.git && cd minishell && make`
 #### If for example you have already built the progam and would like to run it on a docker container
-`~ $ make re` which will force clean all files and redo the build.
+`$ make re` which will force clean all files and redo the build.
 
-### Running the program
-`~ $ ./minishell`
+### Usage
+`$ ./minishell`
