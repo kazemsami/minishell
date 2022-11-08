@@ -3,11 +3,11 @@
  
 Minishell is a partial replica of the UNIX shell and command language Bash written in the C lanugage.
  
- ### This projects tasks include
+ ### This project's tasks include
  
  * Parsing input
  * Executing commands with piping functionality
- * Rebuilding commands such as echo, cat, export etc...
+ * Rebuilding the commands echo, cat, export unset, pwd, cd, env
  * Handling environmental variables
  * Handling Redirections
 
