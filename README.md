@@ -1,7 +1,7 @@
  # 42's Minishell project
  
  
-Minishell is a partial replica of the UNIX shell and command language Bash written in the C lanugage.
+Minishell is a partial replica of the UNIX shell and command language Bash written in the C lanugage. Thank you [Anastasia](https://github.com/Anastasiia-Ni) for being a wonderful partner in this long project.
  
  ### Project tasks include
  
