@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/12 05:14:00 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,13 @@ void	cnt_notsep(char *line, int i, int *cnt)
 int	parseline(t_prog *prog)
 {
 	char	*line;
+	char	*read_line_print;
 
 	signal(SIGINT, &sig_int);
 	signal(SIGQUIT, &sig_quit);
-	line = readline("Minishell> ");
+	read_line_print = get_prompt(prog);
+	line = readline(read_line_print);
+	free(read_line_print);
 	if (!line)
 	{
 		readline_fix(prog, 0);
@@ -84,16 +87,7 @@ int	parseline(t_prog *prog)
 	}
 	if (line[0])
 	{
-		add_history(line);
-		if (check_quotes(line) != 0)
-		{
-			ft_putendl_fd("error open quotes", 2);
-			free(line);
-			return (2);
-		}
-		get_token(line, prog);
-		free(line);
-		return (0);
+		return (do_parse(prog, line));
 	}
 	free(line);
 	return (2);

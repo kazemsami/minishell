@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/22 16:01:50 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/12 05:12:54 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,18 @@ int	check_token(t_prog *prog)
 		++i;
 	}
 	return (1);
+}
+
+int	do_parse(t_prog *prog, char *line)
+{
+	add_history(line);
+	if (check_quotes(line) != 0)
+	{
+		ft_putendl_fd("error open quotes", 2);
+		free(line);
+		return (2);
+	}
+	get_token(line, prog);
+	free(line);
+	return (0);
 }

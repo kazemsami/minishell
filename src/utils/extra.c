@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/12 05:13:02 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,28 @@ void	remove_quotes(char **cmd)
 	tmp = quotes_extra(*cmd);
 	free(*cmd);
 	*cmd = tmp;
+}
+
+char	*get_prompt(t_prog *prog)
+{
+	char	*ret;
+	char	*tmp;
+	char	*trunc;
+
+	tmp = get_env("USER", prog);
+	ret = ft_strjoin("\033[0;32m", tmp, 0);
+	free(tmp);
+	ret = ft_strjoin(ret, "@", 1);
+	tmp = malloc(sizeof(char) * 100);
+	gethostname(tmp, 100);
+	trunc = ft_strchr(tmp, '.');
+	*trunc = '\0';
+	ret = ft_strjoin(ret, tmp, 1);
+	free(tmp);
+	ret = ft_strjoin(ret, ": \033[0;34m", 1);
+	tmp = getcwd(NULL, 0);
+	ret = ft_strjoin(ret, tmp, 1);
+	free(tmp);
+	ret = ft_strjoin(ret, "\033[0;37m$ ", 1);
+	return (ret);
 }

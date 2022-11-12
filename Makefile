@@ -5,7 +5,7 @@ SRC = ./src/main/minishell.c ./src/exec/exec.c ./src/exec/pipe.c ./src/exec/pipe
 		./src/builtins/builtin.c ./src/builtins/export_utils.c \
 		./src/builtins/echo_cmd.c  ./src/builtins/pwd.c ./src/builtins/export.c  \
 		./src/builtins/exit.c ./src/builtins/cd.c ./src/builtins/unset.c \
-		./src/utils/extra.c ./src/utils/utils.c
+		./src/utils/extra.c ./src/utils/utils.c ./src/utils/print_minishell.c
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 

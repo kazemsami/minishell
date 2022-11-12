@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/03/17 17:31:28 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/12 05:45:22 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,9 @@ void	find_quote(char *str, int *i, int *chk);
 int		cnt_noquotes(char *str);
 void	close_std(t_prog *prog, int fd);
 void	weird_close(void);
+char	*get_prompt(t_prog *prog);
+int		do_parse(t_prog *prog, char *line);
+void	print_minishell(void);
 
 extern t_pid	g_pid;
 
