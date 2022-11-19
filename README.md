@@ -32,3 +32,6 @@ $ make
 
 ### Usage
 `$ ./minishell`
+
+### Tester
+This minishell works with this updated [Lucus Kuhn minishell tester](https://github.com/LucasKuhn/minishell_tester). If you want to test my minishell with this tester make sure you comment out `print_minishell();` on line 104 in ./src/main/minishell.c
