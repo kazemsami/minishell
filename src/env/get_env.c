@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 00:52:44 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:49:35 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,22 @@ char	*get_env(char *env, t_prog *prog)
 
 void	builtin_chk(t_prog *prog, char **cmd)
 {
-	if (pipe_size(prog) > 0 && !prog->redoutput)
+	if (!ft_strcmp(cmd[0], "exit") && pipe_size(prog) == 0)
 	{
-		g_pid.pid[g_pid.index] = fork();
-		if (g_pid.pid[g_pid.index] == 0)
-		{
-			builtin_pipe(prog);
-			builtin_exec(prog, cmd);
-			close_pipes(prog);
-			close_std(prog, -1);
-			exit(0);
-		}
-		close_piptmp(prog);
-		g_pid.index++;
+		builtin_exec(prog, cmd);
+		g_pid.status[prog->pipnum] = -1;
 	}
 	else
 	{
-		builtin_exec(prog, cmd);
-		if (pipe_size(prog) > 0)
-			close_piptmp(prog);
-		g_pid.status[g_pid.index++] = -1;
+		g_pid.pid[prog->pipnum] = fork();
+		if (g_pid.pid[prog->pipnum] == 0)
+		{
+			if (pipe_size(prog) > 0)
+				builtin_pipe(prog);
+			builtin_exec(prog, cmd);
+			close_std(prog, -1);
+			exit(prog->ret);
+		}
 	}
 }
 

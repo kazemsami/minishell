@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/16 15:20:34 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/12 05:45:22 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:56:14 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <signal.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include <string.h>
 # include <dirent.h>
 # include <sys/wait.h>
@@ -51,9 +52,7 @@ typedef struct s_prog
 	int		exec;
 	int		redinput;
 	int		redoutput;
-	int		parent;
 	int		delim;
-	int		err;
 }	t_prog;
 
 typedef struct s_pid
@@ -61,7 +60,6 @@ typedef struct s_pid
 	int	*pid;
 	int	*status;
 	int	size;
-	int	index;
 	int	in;
 	int	out;
 	int	fd;
@@ -76,6 +74,7 @@ void	interrupt_delim(int sig);
 char	**sort_env(char **env);
 int		skip_notsep(char *line, int *i);
 int		parseline(t_prog *prog);
+void	print_cmd_error(char *str);
 void	get_token(char *line, t_prog *prog);
 void	skip_space(char *line, int *i);
 void	free_split(char **strs);
@@ -91,6 +90,7 @@ void	parse_exec(t_prog *prog, int i);
 int		get_type(t_prog *prog, int index);
 int		is_builtin(char *cmd);
 void	builtin_exec(t_prog *prog, char **cmd);
+void	check_delim(t_prog *prog, int z);
 void	expand(char **cmd, t_prog *prog);
 char	**parse_cmd(t_prog *prog, int i);
 int		check_token(t_prog *prog);
@@ -130,8 +130,11 @@ void	ft_check_env(t_prog *prog, char **env);
 void	fix_type(t_prog *prog);
 int		is_redir(t_prog *prog, int i);
 int		cnt_fix(t_prog *prog, int i);
-void	swap_tokens(t_prog *prog, int i);
+void	search_token(char ***sv, int **sv_tmp, t_prog *prog, int i);
+char	**type_ret(t_prog *prog, int *cnt, int i, int **sv_tmp);
+char	**token_ret(t_prog *prog, int *cnt, int i, char ***sv);
 void	fix_token(t_prog *prog);
+int		cnt_token(t_prog *prog, int i);
 int		dollar_am(char *str);
 void	ft_check_env(t_prog *prog, char **env);
 char	**cpy_env(char **env);
@@ -139,7 +142,7 @@ void	do_env(char *str, int i, t_prog *prog, char **ret);
 char	*env_name(char *str, int i, int len);
 int		env_len(char *str, int i);
 void	set_default(t_prog *prog);
-void	print_error_d(char *str);
+int		print_error_d(char *str);
 void	fix_global(t_prog *prog);
 void	remove_quotes(char **cmd);
 void	fandr_quotes(char **str);
@@ -154,6 +157,7 @@ void	weird_close(void);
 char	*get_prompt(t_prog *prog);
 int		do_parse(t_prog *prog, char *line);
 void	print_minishell(void);
+void	fix_env(t_prog *prog);
 
 extern t_pid	g_pid;
 

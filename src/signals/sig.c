@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 23:09:18 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:29:54 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,15 +86,8 @@ void	interrupt_delim(int sig)
 
 int	next_pipe(t_prog *prog, int i)
 {
-	if (prog->err && pipe_size(prog) > 0)
+	if (g_pid.status[prog->pipnum] == -1 && pipe_size(prog) > 0)
 	{
-		g_pid.status[g_pid.index++] = -1;
-		close_piptmp(prog);
-		prog->ret = 1;
-	}
-	else if (prog->err)
-	{
-		g_pid.status[g_pid.index++] = -1;
 		prog->ret = 1;
 	}
 	if (prog->redoutput)

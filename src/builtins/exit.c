@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/02 18:33:05 by anifanto          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 12:05:22 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static void	ft_full_exit(t_prog *prog, char **cmd)
 
 static void	ft_print_error_exit(t_prog *prog, char **cmd)
 {
-	ft_putendl_fd("exit", 2);
+	ft_putendl_fd("exit", 1);
 	ft_putstr_fd("minishell: exit: ", 2);
 	ft_putstr_fd(cmd[1], 2);
 	ft_putendl_fd(": numeric argument required", 2);
@@ -97,7 +97,7 @@ void	ft_exit(t_prog *prog, char **cmd)
 			prog->ret = ft_atoi_ms(cmd[1]);
 			if (cmd[2])
 			{
-				ft_putendl_fd("exit", 2);
+				ft_putendl_fd("exit", 1);
 				ft_putendl_fd("minishell: exit: too many arguments", 2);
 				prog->ret = 1;
 				return ;

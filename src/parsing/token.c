@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/20 20:22:58 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 14:13:07 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,6 @@ void	get_token(char *line, t_prog *prog)
 		++z;
 	}
 	prog->token[z] = 0;
-	fix_token(prog);
 	fix_type(prog);
+	fix_token(prog);
 }

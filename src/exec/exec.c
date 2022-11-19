@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:53:09 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:53:33 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,17 +55,14 @@ void	fork_and_exec(char *path, char **cmd, t_prog *prog)
 {
 	if (ft_strchr(path, '/') != NULL)
 	{
-		g_pid.pid[g_pid.index] = fork();
-		if (g_pid.pid[g_pid.index] == 0)
+		g_pid.pid[prog->pipnum] = fork();
+		if (g_pid.pid[prog->pipnum] == 0)
 			pipe_exec(prog, path, cmd);
-		if (!prog->exec)
-			close_piptmp(prog);
-		g_pid.index++;
 	}
 	else
 	{
 		print_error_c(prog, path);
-		prog->parent = 1;
+		g_pid.status[prog->pipnum] = -1;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 12:46:04 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/12 05:13:02 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:57:36 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,12 @@ void	set_default(t_prog *prog)
 	prog->fdin = -1;
 	prog->fdout = -1;
 	prog->exec = 1;
-	prog->err = 0;
 	prog->pipnum = 0;
 	prog->delim = 0;
 	prog->redinput = 0;
 	prog->redoutput = 0;
 	g_pid.pipsize = 0;
-	prog->parent = 0;
 	g_pid.size = 0;
-	g_pid.index = 0;
 	if (g_pid.pid)
 	{
 		free(g_pid.pid);
@@ -38,21 +35,26 @@ void	set_default(t_prog *prog)
 	}
 }
 
-void	print_error_d(char *str)
+int	print_error_d(char *str)
 {
-	if (errno == 2)
+	struct stat	chk;
+
+	if (stat(str, &chk) == 0)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		if (chk.st_mode & S_IFDIR)
+		{
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(str, 2);
+			ft_putendl_fd(": is a directory", 2);
+		}
+		else
+			print_cmd_error(str);
 	}
 	else
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putendl_fd(": is a directory", 2);
-	}
+		print_cmd_error(str);
+	if (!ft_strcmp("Permission denied", strerror(errno)))
+		return (1);
+	return (0);
 }
 
 void	fix_global(t_prog *prog)
@@ -69,8 +71,8 @@ void	fix_global(t_prog *prog)
 		g_pid.pid = malloc(sizeof(int) * 1);
 		g_pid.status = malloc(sizeof(int) * 1);
 		g_pid.size = 1;
-		ft_memset(g_pid.pid, 1, 1);
-		ft_memset(g_pid.status, 1, 1);
+		g_pid.pid[0] = 1;
+		g_pid.status[0] = 1;
 	}
 }
 

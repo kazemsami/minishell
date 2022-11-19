@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/01 13:43:56 by anifanto          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 13:36:41 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,54 +34,58 @@ int	cnt_fix(t_prog *prog, int i)
 	return (cnt);
 }
 
-void	swap_tokens(t_prog *prog, int i)
+void	swap_token(t_prog *prog, int z, int i)
 {
 	char	*tmp;
-	int		sv;
-	int		times;
 
-	sv = i;
-	times = 0;
-	while (times < 2)
+	tmp = prog->token[z];
+	prog->token[z] = prog->token[i + 2];
+	prog->token[i + 2] = tmp;
+	prog->type[z] = prog->type[i + 2];
+}
+
+static void	find_fix(t_prog *prog, int *i, int *z, int *cnt)
+{
+	int	chk;
+
+	chk = 0;
+	if (prog->type[*i] != CMD && prog->type[*i] != ARG
+		&& prog->type[*i] != PIPE)
 	{
-		tmp = prog->token[i];
-		while (prog->token[i + 1] && ft_strcmp(prog->token[i + 1], "|") != 0)
+		if (*z == 0)
+			*z = *i;
+		while (prog->token[*i + 2] && prog->type[*i + 2] == ARG)
 		{
-			prog->token[i] = prog->token[i + 1];
-			++i;
+			swap_token(prog, (*z)++, (*i)++);
+			chk = 1;
 		}
-		prog->token[i] = tmp;
-		i = sv;
-		times++;
+		if (chk)
+			(*cnt)++;
 	}
 }
 
 void	fix_token(t_prog *prog)
 {
 	int		i;
+	int		z;
+	int		cnt;
+	char	**sv;
+	int		*sv_tmp;
 
 	i = 0;
-	while (prog->token[i])
+	z = 0;
+	cnt = 0;
+	sv = NULL;
+	while (prog->token[i + 1] && prog->token[i + 2])
 	{
-		if ((i == 0 && is_redir(prog, i))
-			|| (i > 0 && !ft_strcmp(prog->token[i - 1], "|")
-				&& is_redir(prog, i)))
+		search_token(&sv, &sv_tmp, prog, i);
+		find_fix(prog, &i, &z, &cnt);
+		if ((!prog->token[i + 1] || !prog->token[i + 2]
+				|| !prog->token[i + 3] || prog->type[i + 2] == PIPE) && sv)
 		{
-			if (cnt_fix(prog, i) > 2)
-				swap_tokens(prog, i);
+			sv = token_ret(prog, &cnt, z, &sv);
+			sv = type_ret(prog, &cnt, z, &sv_tmp);
 		}
-		++i;
-	}
-}
-
-void	fix_type(t_prog *prog)
-{
-	int	i;
-
-	i = 0;
-	while (prog->token[i])
-	{
-		prog->type[i] = get_type(prog, i);
-		++i;
+		i++;
 	}
 }

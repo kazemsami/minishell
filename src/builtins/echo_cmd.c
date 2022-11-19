@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/26 22:59:30 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:12:39 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,14 +112,21 @@ void	close_pip(t_prog *prog)
 {
 	int	pip;
 
-	pip = prog->pipnum * 2;
-	if (!prog->pipnum)
-		close(prog->pipfd[0]);
-	else if (prog->pipnum > 0 && prog->pipes != prog->pipnum)
+	pip = 0;
+	while (pip < prog->pipes * 2)
 	{
+		if ((pip == ((prog->pipnum * 2) - 2) && prog->pipnum != 0))
+		{
+			pip++;
+			continue ;
+		}
+		else if ((pip == ((prog->pipnum * 2) + 1)
+				&& prog->pipnum != prog->pipes))
+		{
+			pip++;
+			continue ;
+		}
 		close(prog->pipfd[pip]);
-		close(prog->pipfd[pip - 1]);
+		pip++;
 	}
-	else if (prog->pipes == prog->pipnum)
-		close(prog->pipfd[pip - 1]);
 }

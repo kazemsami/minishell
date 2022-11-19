@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/27 00:10:45 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:10:34 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 void	redir_output(t_prog *prog, char *file, int type)
 {
 	if (prog->fdout > 0)
+	{
 		close(prog->fdout);
+		dup2(prog->out, 1);
+	}
 	if (type == APPEND)
-		prog->fdout = open(file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		prog->fdout = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
 	else
-		prog->fdout = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		prog->fdout = open(file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
 	if (prog->fdout == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
@@ -27,7 +30,7 @@ void	redir_output(t_prog *prog, char *file, int type)
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
 		prog->ret = 1;
-		prog->err = 1;
+		g_pid.status[prog->pipnum] = -1;
 		return ;
 	}
 	prog->redoutput = 1;
@@ -37,7 +40,10 @@ void	redir_output(t_prog *prog, char *file, int type)
 void	redir_input(t_prog *prog, char *file)
 {
 	if (prog->fdin > 0)
+	{
 		close(prog->fdin);
+		dup2(prog->in, 0);
+	}
 	prog->fdin = open(file, O_RDONLY);
 	if (prog->fdin == -1)
 	{
@@ -46,7 +52,7 @@ void	redir_input(t_prog *prog, char *file)
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(strerror(errno), 2);
 		prog->ret = 1;
-		prog->err = 1;
+		g_pid.status[prog->pipnum] = -1;
 		return ;
 	}
 	prog->redinput = 1;
@@ -74,7 +80,7 @@ void	redir_delim(t_prog *prog, char *delim, int index)
 		loop_delim(prog, delim, fd, index);
 	waitpid(pid, &stat, 0);
 	if (stat != 0)
-		prog->err = 1;
+		g_pid.status[prog->pipnum] = -1;
 	dup_delim(fd);
 	if (prog->type[next_op(prog, index)] == DELIM
 		|| prog->type[next_op(prog, index)] == DELIM_TAB)
@@ -120,15 +126,16 @@ void	pipe_exec(t_prog *prog, char *path, char **cmd)
 	else
 	{
 		pip = prog->pipnum * 2;
+		close_pip(prog);
 		if (!prog->redoutput && prog->pipes != prog->pipnum)
 			dup2(prog->pipfd[pip + 1], 1);
 		if (!prog->delim && !prog->redinput && prog->pipnum > 0)
 			dup2(prog->pipfd[pip - 2], 0);
-		close_pip(prog);
 		stat = execve(path, cmd, prog->env);
 		close_pipes(prog);
 	}
-	print_error_d(path);
+	if (print_error_d(path))
+		stat = 126;
 	close_std(prog, -1);
 	exit(stat);
 }

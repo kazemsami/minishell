@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 14:57:38 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/12 05:14:00 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 17:37:05 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,28 +96,13 @@ int	parseline(t_prog *prog)
 void	parse_exec(t_prog *prog, int i)
 {
 	char	**cmd;
-	int		z;
-	int		chk;
 
 	cmd = parse_cmd(prog, i);
-	z = -1;
-	while (cmd[++z])
-	{
-		chk = z;
-		if (ft_strchr(cmd[z], 1))
-		{
-			expand(&cmd[z], prog);
-			if (cmd[z][0] == '\0')
-				cmd = remove_cmd(cmd, z--);
-		}
-		if (chk == z)
-			remove_quotes(&cmd[z]);
-	}
 	if (cmd[0] && is_builtin(cmd[0]))
 		builtin_chk(prog, cmd);
 	else if (cmd[0])
 		exec_cmd(prog, cmd);
 	else
-		prog->parent = 1;
+		g_pid.status[prog->pipnum] = -1;
 	free_split(cmd);
 }

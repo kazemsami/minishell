@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/04 22:23:17 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:13:50 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,10 @@ void	close_piptmp(t_prog *prog)
 	int	pip;
 
 	pip = prog->pipnum * 2;
-	if (!prog->pipnum)
-		close(prog->pipfd[1]);
-	else if (prog->pipnum > 0 && prog->pipes != prog->pipnum)
-	{
+	if (prog->pipnum != 0)
+		close(prog->pipfd[pip - 2]);
+	if (prog->pipes != prog->pipnum)
 		close(prog->pipfd[pip + 1]);
-		close(prog->pipfd[pip - 2]);
-	}
-	else if (prog->pipes == prog->pipnum)
-		close(prog->pipfd[pip - 2]);
 }
 
 void	builtin_pipe(t_prog *prog)
@@ -60,11 +55,11 @@ void	builtin_pipe(t_prog *prog)
 	int	pip;
 
 	pip = prog->pipnum * 2;
-	if (prog->pipes != prog->pipnum)
-		dup2(prog->pipfd[pip + 1], 1);
-	if (prog->pipnum > 0)
-		dup2(prog->pipfd[pip - 2], 0);
 	close_pip(prog);
+	if (prog->pipes != prog->pipnum && !prog->redoutput)
+		dup2(prog->pipfd[pip + 1], 1);
+	if (prog->pipnum > 0 && !prog->redinput)
+		dup2(prog->pipfd[pip - 2], 0);
 }
 
 void	reset_fd(t_prog *prog)

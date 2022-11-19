@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/18 04:53:50 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/08 10:09:17 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 15:52:21 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,15 @@ char	*remove_tabs(char *line)
 
 void	redir(t_prog *prog, int z)
 {
-	if (prog->type[z - 1] == REDIR)
-		redir_output(prog, prog->token[z], REDIR);
-	else if (prog->type[z - 1] == APPEND)
-		redir_output(prog, prog->token[z], APPEND);
-	else if (prog->type[z - 1] == DELIM
-		|| prog->type[z - 1] == DELIM_TAB)
-		redir_delim(prog, prog->token[z], z);
-	else if (prog->type[z - 1] == INPUT)
-		redir_input(prog, prog->token[z]);
+	if (g_pid.status[prog->pipnum] != -1)
+	{
+		if (prog->type[z - 1] == REDIR)
+			redir_output(prog, prog->token[z], REDIR);
+		else if (prog->type[z - 1] == APPEND)
+			redir_output(prog, prog->token[z], APPEND);
+		else if (prog->type[z - 1] == INPUT)
+			redir_input(prog, prog->token[z]);
+	}
 }
 
 int	ft_searh_index(char *str, char c)

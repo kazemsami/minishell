@@ -6,7 +6,7 @@
 /*   By: kabusitt <kabusitt@student.42abudhabi.a    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 14:07:13 by kabusitt          #+#    #+#             */
-/*   Updated: 2022/11/12 05:39:01 by kabusitt         ###   ########.fr       */
+/*   Updated: 2022/11/19 19:58:52 by kabusitt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,19 @@ void	run_prog(t_prog *prog)
 	z = 0;
 	while (prog->token[i])
 	{
+		check_delim(prog, z);
 		while (check_type(prog, next_op(prog, z), "RAID"))
 		{
 			z = next_op(prog, z) + 1;
 			redir(prog, z);
 		}
 		if ((i == 0 || (i > 0 && prog->type[i - 1] == PIPE))
-			&& !prog->err && prog->type[i] == CMD)
-		{
+			&& g_pid.status[prog->pipnum] != -1 && prog->type[i] == CMD)
 			parse_exec(prog, i);
-		}
 		i = next_pipe(prog, i) + 1;
-		prog->err = 0;
 		z = i;
+		if (pipe_size(prog) > 0)
+			close_piptmp(prog);
 		prog->pipnum++;
 	}
 }
@@ -64,21 +64,23 @@ void	shell(t_prog *prog)
 	int	i;
 
 	fix_global(prog);
+	fix_env(prog);
 	run_prog(prog);
 	i = 0;
-	while (i < g_pid.size && !prog->parent && !prog->err)
+	while (i < g_pid.size)
 	{
 		if (g_pid.status[i] != -1)
 		{
 			waitpid(g_pid.pid[i], &g_pid.status[i], 0);
-			if (g_pid.status[i] && g_pid.status[i] != 11)
+			if (g_pid.status[i] != 65280 && g_pid.status[i] != 13)
 				prog->ret = g_pid.status[i] / 256;
-			else if (g_pid.status[i] == 11)
-				prog->ret = 127;
+			else if (g_pid.status[i] == 65280)
+				prog->ret = g_pid.status[i] / 512;
+			else
+				prog->ret = 1;
 		}
 		++i;
 	}
-	reset_fd(prog);
 	close_fds(prog);
 	if (pipe_size(prog) > 0)
 		free(prog->pipfd);
